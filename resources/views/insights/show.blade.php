@@ -24,20 +24,20 @@
             <div class="mt-4">
                 @foreach($insight->comments as $comment)
                     <div class="mb-4">
-                        <p class="text-gray-700">{{ $comment->comment }}</p>
-                        <p class="text-sm text-gray-600">{{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}</p>
+                        <p class="text-gray-700">{!! $comment->comment !!}</p>
+                        <p class="text-sm text-gray-600">{!! $comment->user->name !!} | {{ $comment->created_at->diffForHumans() }}</p>
                     </div>
                 @endforeach
             </div>
 
             @auth
-                <form action="{{ route('comments.store', $insight->id) }}" method="POST">
+                <form action="{{ route('comments.store', $insight->id) }}" class="m-4" method="POST">
                     @csrf
                     <div class="mt-4">
-                        <textarea name="comment" class="form-textarea w-full" rows="4" required></textarea>
+                        <textarea name="comment" class=" w-full" rows="4" required></textarea>
                     </div>
                     <div class="mt-4">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Comment</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Add Comment</button>
                     </div>
                 </form>
             @else

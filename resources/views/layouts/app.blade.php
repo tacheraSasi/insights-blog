@@ -36,13 +36,6 @@
             </main>
         </div>
     </body>
-    <script src="https://cdn.tiny.cloud/1/{{env('TINYMCE')}}/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'lists link image preview',
-            toolbar: 'bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-        });
-    </script>
+    <x-tinymce-config />
 
 </html>

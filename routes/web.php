@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::get('/home', [InsightController::class,"home"])->middleware(['auth', 'verified'])->name('home');
+Route::get('/home', [InsightController::class,"index"])->middleware(['auth', 'verified'])->name('home');
 
 Route::get("/write", function(){
     return ["route"=>"home","write"=> "write posts"];
