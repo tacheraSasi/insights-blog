@@ -14,7 +14,7 @@
               <div class="group relative">
                 <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
                   <a href="#">
-                    <span class="absolute inset-0"></span>
+                    <span class="absolute inset-0"></span> 
                     Boost your conversion rate
                   </a>
                 </h3>

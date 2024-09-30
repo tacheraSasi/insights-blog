@@ -24,7 +24,7 @@
                 <div class="mt-2">
                     <label class="block font-bold" for="content">Content</label>
                     <x-input-error class="mt-2" :messages="$errors->get('content')" />
-                    <textarea name="content" id="content" class="form-textarea w-full " rows="8" required>{{ old('content') }}</textarea>
+                    <textarea name="content" id="content" class="form-textarea w-full rounded-lg" rows="8" required>{{ old('content') }}</textarea>
                 </div>
         
                 <div class="mt-2">
