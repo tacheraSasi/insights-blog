@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InsightController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Insight;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,12 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    // dd (Auth::user());
-    return view('welcome');
+    if(Auth::check()){
+        return redirect(route("home"));
+    }
+    $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(6);
+    return view('welcome', compact('insights'));
+    
 });
 
 Route::get('/dashboard', function () {
@@ -26,9 +31,9 @@ Route::get('/dashboard', function () {
 
 Route::get('/home', [InsightController::class,"index"])->middleware(['auth', 'verified'])->name('home');
 
-Route::get("/write", function(){
-    return ["route"=>"home","write"=> "write posts"];
-})->name("write");
+// Route::get("/write", function(){
+//     return ["route"=>"home","write"=> "write posts"];
+// })->name("write");
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

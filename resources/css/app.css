@@ -9,6 +9,9 @@
     background-color: #ffffff; /* White background */
     color: #000000; /* Black text */
 }
+html{
+    scroll-behavior: smooth;
+}
 
 .tox .tox-toolbar {
     background-color: #f7fafc; /* Light gray for toolbar */

@@ -1,47 +1,81 @@
-<x-app-layout>
-{{-- 
-@section('meta_title', $insight->title)
-@section('meta_description', Str::limit($insight->content, 150)) --}}
+<x-app-layout :insight="$insight">
+    {{-- 
+    @section('meta_title', $insight->title)
+    @section('meta_description', Str::limit($insight->content, 150)) 
+    --}}
 
-    <div class="container mx-auto mt-10">
-        <h1 class="text-3xl font-bold dark:text-neutral-200">{{ $insight->title }}</h1>
-        <p class="text-neutral-600">Category: {{ $insight->category->name }} | {{ $insight->created_at->diffForHumans() }}</p>
+    <div class="container mx-auto mt-10 p-4">
+        <!-- Title and Category Information -->
+        <h1 class="font-extrabold text-neutral-900 dark:text-neutral-200 leading-tight text-4xl">{{ $insight->title }}</h1>
+        <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            Category: 
+            <span class="font-semibold text-neutral-600 dark:text-neutral-300">
+                {{ $insight->category->name }}
+            </span> 
+            
+        </p>
 
-        <x-card class="mt-6">
-            {!! $insight->content !!}
+        <!-- Insight Content -->
+        <x-card >
+            <div class="flex items-center gap-x-2 text-xs">
+                
+                <a href="/category/{{ $insight->category->name }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
+                    {{ $insight->user->name }}
+                </a>
+
+                <time datetime="{{ $insight->created_at }}" class="text-neutral-500 mx-2">
+                    {{ $insight->created_at->diffForHumans() }}
+                </time>
+            </div>
+            <article class="prose dark:prose-invert max-w-none">
+                {!! $insight->content !!}
+            </article>
         </x-card>
 
-        <div class="mt-6 flex">
-            <form action="{{ route('insights.like', $insight->id) }}" method="POST">
+        <!-- Like Button with Enhanced Styling -->
+        <div class="mt-6 flex items-center space-x-4 dark:text-neutral-200">
+            <form action="{{ route('insights.like', $insight->id) }}" method="POST" class="flex items-center">
                 @csrf
-                <button type="submit" class="text-blue-500">{{ $insight->likes->count() }} Likes</button>
+                <button type="submit" class="flex items-center text-customGreenDark dark:text-customGreenLight hover:text-blue-800 dark:hover:text-green-300 transition duration-300">
+                    <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.5 3.5 5 5.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5 18.5 5 20 6.5 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                    </svg>
+                    <span class="font-semibold text-lg">{{ $insight->likes->count() }} Likes</span>
+                </button>
             </form>
         </div>
 
+        <!-- Comments Section -->
         <div class="mt-10">
-            <h2 class="text-2xl font-bold">Comments ({{ $insight->comments->count() }})</h2>
+            <h2 class="text-3xl font-semibold text-neutral-800 dark:text-neutral-200">Comments ({{ $insight->comments->count() }})</h2>
 
-            <div class="mt-4">
+            <!-- Comment List -->
+            <div class="mt-6 space-y-6">
                 @foreach($insight->comments as $comment)
-                    <div class="mb-4">
-                        <p class="text-neutral-700">{!! $comment->comment !!}</p>
-                        <p class="text-sm text-neutral-600">{!! $comment->user->name !!} | {{ $comment->created_at->diffForHumans() }}</p>
+                    <div class="p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-md">
+                        <p class="text-neutral-700 dark:text-neutral-300">{{ $comment->comment }}</p>
+                        <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+                            {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
+                        </p>
                     </div>
                 @endforeach
             </div>
 
+            <!-- Add Comment Form -->
             @auth
-                <form action="{{ route('comments.store', $insight->id) }}" class="m-4" method="POST">
+                <form action="{{ route('comments.store', $insight->id) }}" method="POST" class="mt-6">
                     @csrf
-                    <div class="mt-4">
-                        <textarea name="comment" class=" w-full" rows="4" required></textarea>
+                    <div>
+                        <textarea name="comment" rows="4" class="w-full p-4 rounded-lg border dark:bg-neutral-900 dark:border-neutral-700 focus:outline-none focus:ring focus:ring-blue-500 dark:focus:ring-blue-400 placeholder-neutral-500 dark:placeholder-neutral-400" placeholder="Write a comment..." required></textarea>
                     </div>
                     <div class="mt-4">
-                        <x-primary-button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Add Comment</x-primary-button>
+                        <x-primary-button type="submit" class="bg-blue-600 dark:bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-400 transition duration-300">
+                            Add Comment
+                        </x-primary-button>
                     </div>
                 </form>
             @else
-                <p class="text-neutral-600">You must be logged in to comment.</p>
+                <p class="text-neutral-600 dark:text-neutral-400 mt-4">You must be logged in to comment.</p>
             @endauth
         </div>
     </div>

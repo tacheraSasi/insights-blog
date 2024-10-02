@@ -14,7 +14,7 @@ class InsightController extends Controller
     public function home()
     {
         // Fetch insights with pagination (5 insights per page)
-        $insights = Insight::orderBy('created_at', 'desc')->paginate(5);
+        $insights = Insight::orderBy('created_at', 'desc')->paginate(6);
         
         // Pass the insights to the view
         return view('home', compact('insights'));
@@ -23,7 +23,7 @@ class InsightController extends Controller
     // Fetch all insights
     public function index()
     {
-        $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(5);
+        $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(6);
         return view('home', compact('insights'));
     }
 
