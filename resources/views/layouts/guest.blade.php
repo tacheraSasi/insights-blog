@@ -10,6 +10,8 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Icons -->
+        <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,7 +20,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-neutral-100 dark:bg-neutral-900">
             <div>
                 <a href="/" class="flex items-center gap-2">
-                    <x-application-logo class="w-20 h-20 fill-current text-neutral-500" /> 
+                    <x-application-logo class="w-20 h-20 fill-current text-neutral-500" />
                     <span class="text-3xl"> Insights</span>
                 </a>
             </div>

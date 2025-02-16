@@ -67,7 +67,7 @@
 
                 {{-- geusts --}}
                 @guest
-                <a href="{{route('login')}}">Login</a>
+                <a href="{{route('login')}}" class="dark:text-white">Login</a>
                 <x-link-button to="{{route('register')}}">{{__('Register')}}</x-link-button>
                 @endguest
             </div>

@@ -20,7 +20,7 @@
             <div class="flex items-center justify-between">
                 
                 <div class="flex-items-center gap-x-2 text-xs">
-                    <a href="/category/{{ $insight->category->name }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
+                    <a href="/category/{{ $insight->user->name }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                         {{ $insight->user->name }}
                     </a>
     
