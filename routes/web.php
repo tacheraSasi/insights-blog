@@ -24,6 +24,12 @@ Route::get('/', function () {
     
 });
 
+//Fallback route 404
+Route::fallback((function(){
+    return view("errors.404");
+}));
+
+
 Route::get('/dashboard', function () {
     return redirect(route("home"));
 })->middleware(['auth', 'verified'])->name('dashboard');
