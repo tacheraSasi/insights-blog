@@ -12,14 +12,12 @@
             <span class="font-semibold text-neutral-600 dark:text-neutral-300">
                 {{ $insight->category->name }}
             </span> 
-            
         </p>
 
         <!-- Insight Content -->
-        <x-card >
+        <x-card>
             <div class="flex items-center justify-between">
-                
-                <div class="flex-items-center gap-x-2 text-xs">
+                <div class="flex items-center gap-x-2 text-xs">
                     <a href="/category/{{ $insight->user->name }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                         {{ $insight->user->name }}
                     </a>
@@ -41,34 +39,34 @@
                         {{__('Share')}} 
                     </x-primary-button>
                 </div>
-                {{-- share modal --}}
+
+                <!-- Share Modal -->
                 <x-modal name="share-insight">
                     <div class="p-4">
-                        <h1 class="text-2xl font-bold">Share insight</h1> <br>
+                        <h1 class="text-2xl font-bold">Share insight</h1>
+                        <br>
                         <p>
                             <b>Copy link:</b>  
-                            <span id="insight-link">{{request()->url()}}</span>
+                            <span id="insight-link">{{ request()->url() }}</span>
                         </p>
                         <div class="mt-6 flex justify-end gap-2">
-                            <x-primary-button  id="link-copy-button">
+                            <x-primary-button id="link-copy-button">
                                 {{ __('Copy') }}
                             </x-primary-button>
-
                             <x-secondary-button x-on:click="$dispatch('close')">
                                 {{ __('Cancel') }}
                             </x-secondary-button>
-            
-                            
                         </div>
                     </div>
                 </x-modal>
             </div>
-            <article class=" max-w-none" id="content-output">
-                
-                <md-block class="">
-                    <span class="font-inherit w-full">
+
+            <article class="max-w-none" id="content-output">
+                <!-- Preserve whitespace and line breaks -->
+                <md-block class="whitespace-pre-wrap">
+                    <div class="font-inherit w-full [&_pre]:whitespace-break-spaces [&_pre]:overflow-x-auto">
                         {!! $insight->html !!}
-                    </span>
+                    </div>
                 </md-block>
 
                 @if (Auth::user() == $insight->user)
@@ -76,12 +74,10 @@
                         @include("insights.delete-insight")
                     </div>
                 @endif
-                
             </article>
-            
         </x-card>
 
-        <!-- Like Button with Enhanced Styling -->
+        <!-- Like Section -->
         <div class="mt-6 flex items-center space-x-4 dark:text-neutral-200">
             <form action="{{ route('insights.like', $insight->id) }}" method="POST" class="flex items-center">
                 @csrf
@@ -102,7 +98,7 @@
             <div class="mt-6 space-y-6">
                 @foreach($insight->comments as $comment)
                     <div class="p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-md">
-                        <p class="text-neutral-700 dark:text-neutral-300">{{ $comment->comment }}</p>
+                        <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">{{ $comment->comment }}</pre>
                         <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
                             {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
                         </p>
@@ -118,7 +114,7 @@
                         <textarea name="comment" rows="4" class="w-full p-4 rounded-lg border dark:bg-neutral-900 text-black dark:text-white dark:border-neutral-700 focus:outline-none focus:ring focus:ring-neutral-500 dark:focus:ring-neutral-400 placeholder-neutral-500 dark:placeholder-neutral-400" placeholder="Write a comment..." required></textarea>
                     </div>
                     <div class="mt-4">
-                        <x-primary-button type="submit" class="bg-customGreenDark dark:bg-customGreenLight text-white px-5 py-2 rounded-md border-none  hover:bg-neutral-700 dark:hover:bg-neutral-400 transition duration-300">
+                        <x-primary-button type="submit" class="bg-customGreenDark dark:bg-customGreenLight text-white px-5 py-2 rounded-md border-none hover:bg-neutral-700 dark:hover:bg-neutral-400 transition duration-300">
                             Add Comment
                         </x-primary-button>
                     </div>
