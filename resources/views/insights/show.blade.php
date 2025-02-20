@@ -65,7 +65,8 @@
                 <!-- Preserve whitespace and line breaks -->
                 <md-block class="whitespace-pre-wrap">
                     <div class="font-inherit w-full [&_pre]:whitespace-break-spaces [&_pre]:overflow-x-auto">
-                        {!! $insight->html !!}
+                        {{-- {!! $insight->html !!} --}}
+                        {!! Illuminate\Support\Str::markdown($insight->html) !!}
                     </div>
                 </md-block>
 
