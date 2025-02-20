@@ -1,4 +1,3 @@
-{{-- resources/views/errors/404.blade.php --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -21,42 +20,39 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-neutral-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-customGreenDark dark:bg-customGreenLight">
-            <div>
-                <a href="/" class="flex items-center gap-2">
-                    <x-application-logo class="w-20 h-20 fill-current text-neutral-500" />
+    <body class="font-sans text-neutral-900 antialiased bg-neutral-200 dark:bg-neutral-800">
+        <div class="min-h-screen flex flex-col items-center justify-center px-6">
+            <div class="text-center">
+                <a href="/" class="flex items-center gap-3">
+                    <x-application-logo class="w-16 h-16 fill-current text-neutral-500" />
                     <span class="text-3xl font-semibold text-neutral-800 dark:text-neutral-200">Insights</span>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white dark:bg-neutral-800 shadow-md overflow-hidden sm:rounded-lg text-center">
-                <h1 class="text-6xl font-extrabold text-blue-600 dark:text-blue-400">404</h1>
-                <p class="text-xl text-neutral-700 dark:text-neutral-300 mt-4">
+            <x-card class="mt-8 w-full max-w-lg px-8 py-10 bg-white dark:bg-neutral-800 shadow-lg rounded-lg text-center">
+                <h1 class="text-7xl font-extrabold text-red-600 dark:text-red-400 mx-auto">404</h1>
+                <p class="text-xl text-neutral-600 dark:text-neutral-300 mt-3">
                     Oops! The page you're looking for doesn't exist.
                 </p>
-                
-                <div class="mt-6 flex flex-col sm:flex-row sm:justify-center gap-4">
+
+                <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
                     <a href="{{ url('/') }}"
-                        class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition">
+                        class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white text-lg font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-all">
                         Home
                     </a>
-                    <a href="{{ url('/contact') }}"
-                        class="px-6 py-3 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition">
-                        Contact Support
-                    </a>
-                    <a href="{{ url('/faq') }}"
-                        class="px-6 py-3 bg-purple-600 dark:bg-purple-500 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-600 transition">
-                        FAQ
+                    <a href="{{ url('/login') }}"
+                        class="px-6 py-3 bg-green-600 dark:bg-green-500 text-white text-lg font-medium rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-all">
+                        Login
                     </a>
                 </div>
 
                 <div class="mt-6 text-sm text-neutral-500 dark:text-neutral-400">
-                    If you believe this is an error, please <a href="{{ url('/report') }}" class="text-blue-500 underline hover:text-blue-700 dark:hover:text-blue-400">
-                        report it here
-                    </a>.
+                    If you believe this is an error, please  
+                    <a href="{{ url('/report') }}" class="text-blue-500 underline hover:text-blue-700 dark:hover:text-blue-400">
+                        report it here.
+                    </a>
                 </div>
-            </div>
+            </x-card>
         </div>
     </body>
 </html>
