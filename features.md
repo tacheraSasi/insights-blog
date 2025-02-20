@@ -1,6 +1,4 @@
-Here’s a simple list of features for your tech/programmers blog:
-
-### Features for a Tech/Programmers Blog
+# Features for a Tech/Programmers Blog
 
 1. **Code Snippets with Syntax Highlighting**
 2. **Markdown Support for Posts**
