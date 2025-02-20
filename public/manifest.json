@@ -1,0 +1,23 @@
+{
+    "name": "Insights",
+    "short_name": "Insights",
+    "description": "Welcome to Insights, your gateway to thought-provoking articles and in-depth analyses. Explore the latest trends, innovative ideas, and expert opinions that shape the future of technology and business. ",
+    "lang": "en",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#00000080",  
+    "theme_color": "#00000080",       
+    "icons": [
+      {
+        "src": "/assets/icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/assets/icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

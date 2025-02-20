@@ -13,6 +13,9 @@
         <!-- Icons -->
         <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
 
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#000000">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
