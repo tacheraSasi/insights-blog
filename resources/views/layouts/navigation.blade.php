@@ -110,11 +110,11 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('insights.create')">
+                    <x-responsive-nav-link :href="route('insights.create')" :active="request()->routeIs('insights.create')">
                         {{ __('Write') }}
                     </x-responsive-nav-link>
 
-                    <x-responsive-nav-link :href="route('profile.edit')">
+                    <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
 
