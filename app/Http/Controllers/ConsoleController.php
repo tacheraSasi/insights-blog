@@ -24,7 +24,7 @@ class ConsoleController extends Controller
         foreach ($users as $user) {
             Mail::send('emails.custom', [
                 'subject' => $request->subject,
-                'messageContent' => $request->message
+                'messageContent' => $this->messageTemplate($user->name,$request->message),
             ], function ($mail) use ($user, $request) {
                 $mail->to($user->email)
                      ->subject($request->subject);
@@ -32,5 +32,10 @@ class ConsoleController extends Controller
         }
 
         return redirect()->route('console.email.form')->with('success', 'Emails sent successfully!');
+    }
+
+    public function messageTemplate($name,$message){
+
+        return "Hello $name,\n $message";
     }
 }
