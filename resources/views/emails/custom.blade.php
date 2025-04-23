@@ -12,9 +12,12 @@
                     <!-- Header -->
                     <tr>
                         <td style="background-color: #428d5c; padding: 32px 40px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">
-                                {{ config('app.name') }}
-                            </h1>
+                            <div style="text-align: center;">
+                                <img src="https://insights.ekilie.com/assets/img/icon.png" alt="Logo" style="width: 80px; height: auto; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.4;">
+                                    {{ config('app.name') }}
+                                </h1>
+                            </div>
                         </td>
                     </tr>
                     
