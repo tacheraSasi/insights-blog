@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InsightController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ConsoleController;
 use App\Models\Insight;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,9 @@ Route::get('/dashboard', function () {
 
 Route::get('/home', [InsightController::class,"index"])->middleware(['auth', 'verified'])->name('home');
 
+#Console
+// Route::get('/console',)
+
 // Route::get("/write", function(){
 //     return ["route"=>"home","write"=> "write posts"];
 // })->name("write");
@@ -45,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/console', [ConsoleController::class, 'index'])->name('console.index');
+    Route::get('/console/send-email', [ConsoleController::class, 'showEmailForm'])->name('console.email.form');
+    Route::post('/console/send-email', [ConsoleController::class, 'sendEmailToAllUsers'])->name('console.email.send');
 });
 
 require __DIR__.'/insights.php';
