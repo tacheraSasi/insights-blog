@@ -27,6 +27,7 @@ class ConsoleController extends Controller
                 'messageContent' => $this->messageTemplate($user->name,$request->message),
             ], function ($mail) use ($user, $request) {
                 $mail->to($user->email)
+                     ->from(config('mail.from.address'), config('mail.from.name'))
                      ->subject($request->subject);
             });
         }
