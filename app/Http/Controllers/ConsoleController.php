@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ConsoleController extends Controller
 {
-    // Show the email form
     public function showEmailForm()
     {
         return view('console.email-form');
     }
 
-    // Send email to all users
     public function sendEmailToAllUsers(Request $request)
     {
         $request->validate([
@@ -24,7 +22,10 @@ class ConsoleController extends Controller
         $users = User::all();
 
         foreach ($users as $user) {
-            Mail::raw($request->message, function ($mail) use ($user, $request) {
+            Mail::send('emails.custom', [
+                'subject' => $request->subject,
+                'messageContent' => $request->message
+            ], function ($mail) use ($user, $request) {
                 $mail->to($user->email)
                      ->subject($request->subject);
             });
