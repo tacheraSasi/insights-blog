@@ -26,7 +26,7 @@ class InsightSeeder extends Seeder
 
         // Create some categories ensuring uniqueness
         foreach (range(1, 5) as $index) {
-            $name = $faker->word() 
+            $name = $faker->word();
             $category = Category::firstOrCreate([
                 'name' => $name,
             ], [
