@@ -18,7 +18,7 @@ class InsightSeeder extends Seeder
 
         // Create a user with random data
         $user = User::firstOrCreate([
-            'email' => 'support@ekilie.com', // Using a specific email for repeated seed runs
+            'email' => 'support@ekilie.com',
         ], [
             'name' => "Sasi W Sasi",
             'password' => bcrypt('tachy2004'),
@@ -26,25 +26,25 @@ class InsightSeeder extends Seeder
 
         // Create some categories ensuring uniqueness
         foreach (range(1, 5) as $index) {
-            $name = $faker->word(); // Generate random category name
+            $name = $faker->word() 
             $category = Category::firstOrCreate([
                 'name' => $name,
             ], [
-                'slug' => Str::slug($name) . '-' . uniqid(), // Ensure unique slug
+                'slug' => Str::slug($name) . '-' . uniqid(), 
             ]);
 
             // Create insights with dynamic content
             $insight = Insight::create([
-                'title' => $faker->sentence(6), // Generate random title
+                'title' => $faker->sentence(6),
                 'content' => '<p>' . implode('</p><p>', $faker->paragraphs(3)) . '</p>', // Generate random paragraphs
-                'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(), // Generate unique slug
+                'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(), 
                 'user_id' => $user->id,
                 'category_id' => $category->id,
             ]);
 
             // Add comments to each insight with dynamic data
             Comment::create([
-                'comment' => $faker->sentence(), // Generate random comment
+                'comment' => $faker->sentence(),
                 'user_id' => $user->id,
                 'insight_id' => $insight->id,
             ]);
