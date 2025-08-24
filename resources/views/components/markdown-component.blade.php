@@ -1,29 +1,34 @@
 @props(['insight' => null, 'markdown' => null])
 
-@php
-    $content = $insight ? $insight->content_with_toc_ids : $markdown;
-    $showToc = $insight ? $insight->should_show_toc : false;
-@endphp
+@if($insight)
+    @php
+        $content = $insight->content_with_toc_ids;
+        $showToc = $insight->should_show_toc;
+    @endphp
 
-<div class="prose dark:prose-invert max-w-none">
-    @if($showToc && $insight)
-        {!! $insight->table_of_contents_html !!}
-    @endif
-    
-    <div class="markdown-content">
-        @if($insight)
-            {!! Illuminate\Support\Str::markdown($content) !!}
-        @else
-            @php
-                $converter = new \League\CommonMark\CommonMarkConverter([
-                    'html_input' => 'strip',
-                    'allow_unsafe_links' => false,
-                ]);
-            @endphp
-            {!! $converter->convertToHtml($markdown) !!}
+    <div class="prose dark:prose-invert max-w-none">
+        @if($showToc)
+            {!! $insight->table_of_contents_html !!}
         @endif
+        
+        <div class="markdown-content">
+            {!! Illuminate\Support\Str::markdown($content) !!}
+        </div>
     </div>
-</div>
+@elseif($markdown)
+    @php
+        $converter = new \League\CommonMark\CommonMarkConverter([
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+    @endphp
+    
+    <div class="prose dark:prose-invert max-w-none">
+        <div class="markdown-content">
+            {!! $converter->convertToHtml($markdown) !!}
+        </div>
+    </div>
+@endif
 
 <style>
 /* Custom styles for code blocks with Prism */
