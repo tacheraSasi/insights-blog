@@ -6,7 +6,7 @@
               <x-card>
                   <!-- Article with Fixed Height and Reduced Gaps -->
                   <article class="flex h-[400px] w-full flex-col justify-between bg-white dark:bg-neutral-900   rounded-lg">
-                      <!-- Time and Category Badge -->
+                      <!-- Time, Category Badge, and Reading Time -->
                       <div class="flex items-center gap-x-2 text-xs">
                           <time datetime="{{ $insight->created_at }}" class="text-neutral-500 mx-2">
                               {{ $insight->created_at->diffForHumans() }}
@@ -14,6 +14,11 @@
                           <a href="/category/{{ $insight->category->slug }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                               {{ $insight->category->name }}
                           </a>
+                      </div>
+                      
+                      <!-- Reading Time -->
+                      <div class="mx-2 mt-1">
+                          {!! $insight->reading_time_html !!}
                       </div>
 
                       <!-- Title and Excerpt -->
@@ -24,24 +29,33 @@
                                   {{ $insight->title }}
                               </a>
                           </h3>
-                          <div class="mt-3 line-clamp-3 h-[250px] overflow-hidden text-sm leading-6 text-gray-600 dark:text-neutral-400">
-                              {!! Str::limit($insight->content, 300) !!}
+                          <div class="mt-3 line-clamp-3 h-[200px] overflow-hidden text-sm leading-6 text-gray-600 dark:text-neutral-400">
+                              {!! Str::limit($insight->content, 200) !!}
                           </div>
                       </div>
 
-                      <!-- Author Info -->
-                      <div class="relative mt-6 flex items-center gap-x-2">
-                          {{-- <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                              alt="" class="h-10 w-10 rounded-full bg-neutral-50"> --}}
+                      <!-- Tags -->
+                      @if($insight->tags->count())
+                          <div class="mx-2 my-2 flex flex-wrap gap-1">
+                              @foreach($insight->tags as $tag)
+                                  <a href="{{ route('search') }}?tag={{ $tag->slug }}"
+                                     class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800">
+                                      {{ $tag->name }}
+                                  </a>
+                              @endforeach
+                          </div>
+                      @endif
+
+                      <!-- Author Info and Like Button -->
+                      <div class="relative mt-auto flex items-center justify-between px-2 pb-2">
                           <div class="text-sm leading-6">
                               <p class="font-semibold text-neutral-500">
                                   <a href="/{{ $insight->user->name }}">
-                                      <span class="absolute inset-0"></span>
                                       {{ $insight->user->name }}
                                   </a>
                               </p>
-                              <p class="text-neutral-600">{{ $insight->likes->count() }} Likes</p>
                           </div>
+                          <x-like-button :insight="$insight" :show-text="false" />
                       </div>
                   </article>
               </x-card>
