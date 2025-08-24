@@ -21,7 +21,7 @@ Route::get('/', function () {
     if(Auth::check()){
         return redirect(route("home"));
     }
-    $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(6);
+    $insights = Insight::with('category', 'user', 'likes', 'comments', 'tags')->latest()->paginate(6);
     return view('welcome', compact('insights'));
     
 });

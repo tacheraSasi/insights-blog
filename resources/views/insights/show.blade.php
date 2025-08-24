@@ -66,13 +66,8 @@
             </div>
 
             <article class="max-w-none" id="content-output">
-                <!-- Preserve whitespace and line breaks -->
-                <md-block class="whitespace-pre-wrap">
-                    <div class="font-inherit w-full [&_pre]:whitespace-break-spaces [&_pre]:overflow-x-auto">
-                        {{-- {!! $insight->html !!} --}}
-                        {!! Illuminate\Support\Str::markdown($insight->html) !!}
-                    </div>
-                </md-block>
+                <!-- Use the enhanced markdown component with TOC -->
+                <x-markdown-component :insight="$insight" />
 
                 @if (Auth::user() == $insight->user)
                     <div class="flex mt-4">
@@ -80,19 +75,43 @@
                     </div>
                 @endif
             </article>
+
+            <!-- Tags Section -->
+            @if($insight->tags->count())
+                <div class="mt-6 flex flex-wrap gap-2">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Tags:</span>
+                    @foreach($insight->tags as $tag)
+                        <a href="{{ route('search') }}?tag={{ $tag->slug }}"
+                           class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                           style="background-color: {{ $tag->color }}20; color: {{ $tag->color }};"
+                        >
+                            {{ $tag->name }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </x-card>
 
-        <!-- Like Section -->
-        <div class="mt-6 flex items-center space-x-4 dark:text-neutral-200">
-            <form action="{{ route('insights.like', $insight->id) }}" method="POST" class="flex items-center">
-                @csrf
-                <button type="submit" class="flex items-center text-customGreenDark dark:text-customGreenLight hover:text-green-300 dark:hover:text-green-300 transition duration-300">
-                    <svg class="w-6 h-6 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.5 3.5 5 5.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5 18.5 5 20 6.5 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+        <!-- Like and Share Section -->
+        <div class="mt-6 flex items-center justify-between bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-sm">
+            <div class="flex items-center space-x-4">
+                <x-like-button :insight="$insight" />
+                
+                <button
+                    x-data="" 
+                    x-on:click.prevent="$dispatch('open-modal', 'share-insight')"
+                    class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition duration-200"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
                     </svg>
-                    <span class="font-semibold text-lg">{{ $insight->likes->count() }} Likes</span>
+                    Share
                 </button>
-            </form>
+            </div>
+            
+            <div class="text-sm text-gray-500 dark:text-gray-400">
+                {{ $insight->comments->count() }} comments
+            </div>
         </div>
 
         <!-- Comments Section -->
