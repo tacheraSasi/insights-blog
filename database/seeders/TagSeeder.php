@@ -27,7 +27,12 @@ class TagSeeder extends Seeder
             ['name' => 'Tips', 'color' => '#2ECC71', 'description' => 'Programming tips and tricks'],
             ['name' => 'Best Practices', 'color' => '#E74C3C', 'description' => 'Industry best practices'],
             ['name' => 'Performance', 'color' => '#F39C12', 'description' => 'Performance optimization'],
-            ['name' => 'Security', 'color' => '#8E44AD', 'description' => 'Security and vulnerability topics']
+            ['name' => 'Security', 'color' => '#8E44AD', 'description' => 'Security and vulnerability topics'],
+            ['name' => 'Life Style', 'color' => '#3498DB', 'description' => 'Personal life style choices'],
+            ['name' => 'Mental Health', 'color' => '#27AE60', 'description' => 'Mental health and well-being'],
+            ['name' => 'Relationships', 'color' => '#E74C3C', 'description' => 'Building and maintaining relationships'],
+            ['name' => 'Dating', 'color' => '#9B59B6', 'description' => 'Dating and finding a partner'],
+            ['name' => 'Love Stories', 'color' => '#F39C12', 'description' => 'Heartwarming love stories']
         ];
 
         foreach ($tags as $tagData) {
