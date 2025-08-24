@@ -23,7 +23,7 @@ class InsightController extends Controller
     // Fetch all insights
     public function index()
     {
-        $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(6);
+        $insights = Insight::with('category', 'user', 'likes', 'comments', 'tags')->latest()->paginate(6);
         return view('home', compact('insights'));
     }
 
@@ -59,7 +59,7 @@ class InsightController extends Controller
     // Show a specific insight
     public function show($slug)
     {
-        $insight = Insight::where('slug', $slug)->with('category', 'user', 'comments', 'likes')->firstOrFail();
+        $insight = Insight::where('slug', $slug)->with('category', 'user', 'comments', 'likes', 'tags')->firstOrFail();
         return view('insights.show', compact('insight'));
     }
 

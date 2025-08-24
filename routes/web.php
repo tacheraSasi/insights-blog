@@ -3,6 +3,7 @@
 use App\Http\Controllers\InsightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ConsoleController;
+use App\Http\Controllers\SearchController;
 use App\Models\Insight;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,7 @@ Route::get('/', function () {
     if(Auth::check()){
         return redirect(route("home"));
     }
-    $insights = Insight::with('category', 'user', 'likes', 'comments')->latest()->paginate(6);
+    $insights = Insight::with('category', 'user', 'likes', 'comments', 'tags')->latest()->paginate(6);
     return view('welcome', compact('insights'));
     
 });
@@ -37,6 +38,10 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/home', [InsightController::class,"index"])->middleware(['auth', 'verified'])->name('home');
+
+// Search routes
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/api/search', [SearchController::class, 'api'])->name('search.api');
 
 #Console
 // Route::get('/console',)
