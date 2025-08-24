@@ -13,10 +13,10 @@
                     <!-- Search Query -->
                     <div>
                         <label for="q" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Search</label>
-                        <input type="text" 
-                               id="q" 
-                               name="q" 
-                               value="{{ $query }}" 
+                        <input type="text"
+                               id="q"
+                               name="q"
+                               value="{{ $query }}"
                                placeholder="Search insights..."
                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
@@ -24,7 +24,7 @@
                     <!-- Category Filter -->
                     <div>
                         <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                        <select name="category" 
+                        <select name="category"
                                 id="category"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">All Categories</option>
@@ -39,7 +39,7 @@
                     <!-- Tag Filter -->
                     <div>
                         <label for="tag" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tag</label>
-                        <select name="tag" 
+                        <select name="tag"
                                 id="tag"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">All Tags</option>
@@ -53,13 +53,13 @@
                 </div>
 
                 <div class="flex justify-between items-center">
-                    <button type="submit" 
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition duration-200">
+                    <button type="submit"
+                            class="bg-customGreenDark dark:bg-customGreenLight hover:bg-neutral-700 dark:hover:bg-white text-white px-6 py-2 rounded-md transition duration-200">
                         Search
                     </button>
-                    
+
                     @if($query || $category || $tag)
-                        <a href="{{ route('search') }}" 
+                        <a href="{{ route('search') }}"
                            class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
                             Clear Filters
                         </a>
@@ -72,7 +72,7 @@
         <div class="mb-4">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 @if($query)
-                    Search results for "{{ $query }}" 
+                    Search results for "{{ $query }}"
                 @else
                     All insights
                 @endif
@@ -91,12 +91,12 @@
                                 <time datetime="{{ $insight->created_at }}" class="text-neutral-500 mx-2">
                                     {{ $insight->created_at->diffForHumans() }}
                                 </time>
-                                <a href="{{ route('search') }}?category={{ $insight->category->slug }}" 
+                                <a href="{{ route('search') }}?category={{ $insight->category->slug }}"
                                    class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                                     {{ $insight->category->name }}
                                 </a>
                             </div>
-                            
+
                             <!-- Reading Time -->
                             <div class="mx-2 mt-1">
                                 {!! $insight->reading_time_html !!}
