@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Helpers\ReadingTime;
+use App\Helpers\TableOfContents;
 
 class Insight extends Model
 {
@@ -52,5 +53,38 @@ class Insight extends Model
     public function readingTimeHtml(): Attribute  
     {
         return Attribute::get(fn () => ReadingTime::getReadingTimeHtml($this->content));
+    }
+
+    public function tableOfContents(): Attribute
+    {
+        return Attribute::get(fn () => TableOfContents::generate($this->content));
+    }
+
+    public function tableOfContentsHtml(): Attribute
+    {
+        return Attribute::get(fn () => TableOfContents::generateHtml($this->table_of_contents));
+    }
+
+    public function shouldShowToc(): Attribute
+    {
+        return Attribute::get(fn () => TableOfContents::shouldShowToc($this->content));
+    }
+
+    public function contentWithTocIds(): Attribute
+    {
+        return Attribute::get(fn () => TableOfContents::addHeaderIds($this->content));
+    }
+
+    public function isLikedBy($user = null): bool
+    {
+        if (!$user) {
+            $user = auth()->user();
+        }
+        
+        if (!$user) {
+            return false;
+        }
+
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 }
