@@ -16,6 +16,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "md-block": "^0.0.1"
+        "md-block": "^0.0.1",
+        "prismjs": "^1.30.0"
     }
 }

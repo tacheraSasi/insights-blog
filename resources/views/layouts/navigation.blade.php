@@ -22,6 +22,23 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-2">
+                <!-- Search Bar -->
+                <div class="relative">
+                    <form action="{{ route('search') }}" method="GET" class="flex">
+                        <input type="text" 
+                               name="q" 
+                               placeholder="Search insights..." 
+                               value="{{ request('q') }}"
+                               class="w-64 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md dark:bg-gray-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-r-md transition duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
                 @auth
 
                     {{-- @if (request()->routeIs(route('insights.show')))

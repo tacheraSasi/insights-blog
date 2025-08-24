@@ -6,7 +6,7 @@
               <x-card>
                   <!-- Article with Fixed Height and Reduced Gaps -->
                   <article class="flex h-[400px] w-full flex-col justify-between bg-white dark:bg-neutral-900   rounded-lg">
-                      <!-- Time and Category Badge -->
+                      <!-- Time, Category Badge, and Reading Time -->
                       <div class="flex items-center gap-x-2 text-xs">
                           <time datetime="{{ $insight->created_at }}" class="text-neutral-500 mx-2">
                               {{ $insight->created_at->diffForHumans() }}
@@ -14,6 +14,11 @@
                           <a href="/category/{{ $insight->category->slug }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                               {{ $insight->category->name }}
                           </a>
+                      </div>
+                      
+                      <!-- Reading Time -->
+                      <div class="mx-2 mt-1">
+                          {!! $insight->reading_time_html !!}
                       </div>
 
                       <!-- Title and Excerpt -->

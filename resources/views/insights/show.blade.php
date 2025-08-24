@@ -7,12 +7,16 @@
     <div class="container mx-auto mt-10 p-4">
         <!-- Title and Category Information -->
         <h1 class="font-extrabold text-neutral-900 dark:text-neutral-200 leading-tight text-4xl">{{ $insight->title }}</h1>
-        <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-            Category: 
-            <span class="font-semibold text-neutral-600 dark:text-neutral-300">
-                {{ $insight->category->name }}
-            </span> 
-        </p>
+        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
+            <span>
+                Category: 
+                <span class="font-semibold text-neutral-600 dark:text-neutral-300">
+                    {{ $insight->category->name }}
+                </span>
+            </span>
+            <span class="text-neutral-300">•</span>
+            {!! $insight->reading_time_html !!}
+        </div>
 
         <!-- Insight Content -->
         <x-card>
