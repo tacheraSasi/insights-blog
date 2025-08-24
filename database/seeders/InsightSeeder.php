@@ -24,30 +24,28 @@ class InsightSeeder extends Seeder
             'password' => bcrypt('tachy2004'),
         ]);
 
-        // Create some categories ensuring uniqueness
-        foreach (range(1, 5) as $index) {
-            $name = $faker->word();
-            $category = Category::firstOrCreate([
-                'name' => $name,
-            ], [
-                'slug' => Str::slug($name) . '-' . uniqid(), 
-            ]);
+        $categories = Category::all();
+        $tags = Tag::all();
 
-            // Create insights with dynamic content
-            $insight = Insight::create([
-                'title' => $faker->sentence(6),
-                'content' => '<p>' . implode('</p><p>', $faker->paragraphs(3)) . '</p>', // Generate random paragraphs
-                'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(), 
-                'user_id' => $user->id,
-                'category_id' => $category->id,
-            ]);
+        foreach ($categories as $category) {
+            foreach (range(1, 5) as $index) {
+                $insight = Insight::create([
+                    'title' => $faker->sentence(6),
+                    'content' => '<p>' . implode('</p><p>', $faker->paragraphs(3)) . '</p>', // Generate random paragraphs
+                    'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(), 
+                    'user_id' => $user->id,
+                    'category_id' => $category->id,
+                ]);
 
-            // Add comments to each insight with dynamic data
-            Comment::create([
-                'comment' => $faker->sentence(),
-                'user_id' => $user->id,
-                'insight_id' => $insight->id,
-            ]);
+                $insight->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray());
+
+                // Add comments to each insight with dynamic data
+                Comment::create([
+                    'comment' => $faker->sentence(),
+                    'user_id' => $user->id,
+                    'insight_id' => $insight->id,
+                ]);
+            }
         }
     }
 }
