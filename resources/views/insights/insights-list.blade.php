@@ -15,7 +15,7 @@
                               {{ $insight->category->name }}
                           </a>
                       </div>
-                      
+
                       <!-- Reading Time -->
                       <div class="mx-2 mt-1">
                           {!! $insight->reading_time_html !!}
@@ -39,7 +39,7 @@
                           <div class="mx-2 my-2 flex flex-wrap gap-1">
                               @foreach($insight->tags as $tag)
                                   <a href="{{ route('search') }}?tag={{ $tag->slug }}"
-                                     class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800">
+                                     class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-800">
                                       {{ $tag->name }}
                                   </a>
                               @endforeach

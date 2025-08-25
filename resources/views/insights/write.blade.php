@@ -9,8 +9,8 @@
                         <p class="mt-2 text-gray-600 dark:text-gray-400">Share your knowledge and insights with the community</p>
                     </div>
                     <div class="flex space-x-3">
-                        <button type="button" id="preview-btn" 
-                            class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button type="button" id="preview-btn"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -25,15 +25,15 @@
             <div class="bg-white dark:bg-neutral-900 shadow-xl rounded-lg overflow-hidden">
                 <form action="{{ route('insights.store') }}" method="POST" id="insight-form">
                     @csrf
-                    
+
                     <div class="p-6 space-y-6">
                         <!-- Title Section -->
                         <div class="space-y-2">
                             <label for="title" class="block text-sm font-semibold text-gray-900 dark:text-white">
                                 Title <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="title" name="title" 
-                                class="block w-full px-4 py-3 text-lg border-gray-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                            <input type="text" id="title" name="title"
+                                class="block w-full px-4 py-3 text-lg border-gray-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
                                 placeholder="Enter an engaging title for your insight..."
                                 value="{{ old('title') }}" required autofocus>
                             <x-input-error class="mt-1" :messages="$errors->get('title')" />
@@ -43,7 +43,7 @@
                         <div class="space-y-2" id="slug-preview-container" style="display: none;">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL Preview</label>
                             <div class="px-3 py-2 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-md">
-                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ url('/insights') }}/</span><span id="slug-preview" class="text-sm font-medium text-blue-600 dark:text-blue-400"></span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ url('/insights') }}/</span><span id="slug-preview" class="text-sm font-medium text-green-600 dark:text-green-400"></span>
                             </div>
                         </div>
 
@@ -53,7 +53,7 @@
                                 Category <span class="text-red-500">*</span>
                             </label>
                             <select name="category_id" id="category_id" required
-                                class="block w-full px-4 py-3 border-gray-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
+                                class="block w-full px-4 py-3 border-gray-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200">
                                 <option value="">Select a category...</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="border border-gray-300 dark:border-neutral-600 rounded-lg overflow-hidden">
-                                <textarea name="content" id="content" 
+                                <textarea name="content" id="content"
                                     class="w-full min-h-96 p-4 border-0 focus:ring-0 resize-none dark:bg-neutral-800 dark:text-white"
                                     placeholder="Start writing your insight here..."
                                     required>{{ old('content') }}</textarea>
@@ -99,12 +99,12 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <button type="button" id="save-draft" 
-                                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                <button type="button" id="save-draft"
+                                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                                     Save as Draft
                                 </button>
-                                <button type="submit" 
-                                    class="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                <button type="submit"
+                                    class="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
@@ -173,7 +173,7 @@
             previewBtn.addEventListener('click', function() {
                 const title = titleInput.value;
                 const content = tinymce.get('content') ? tinymce.get('content').getContent() : '';
-                
+
                 if (!title.trim() && !content.trim()) {
                     alert('Please add a title and some content to preview.');
                     return;
@@ -205,7 +205,7 @@
                 const status = document.getElementById('autosave-status');
                 status.textContent = 'Draft saved locally';
                 status.classList.remove('hidden');
-                
+
                 setTimeout(() => {
                     status.classList.add('hidden');
                 }, 3000);
@@ -225,7 +225,7 @@
                     e.preventDefault();
                     saveDraftBtn.click();
                 }
-                
+
                 // Ctrl/Cmd + P to preview
                 if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                     e.preventDefault();

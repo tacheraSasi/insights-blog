@@ -10,7 +10,7 @@
         @if($showToc)
             {!! $insight->table_of_contents_html !!}
         @endif
-        
+
         <div class="markdown-content">
             {!! Illuminate\Support\Str::markdown($content) !!}
         </div>
@@ -22,7 +22,7 @@
             'allow_unsafe_links' => false,
         ]);
     @endphp
-    
+
     <div class="prose dark:prose-invert max-w-none">
         <div class="markdown-content">
             {!! $converter->convertToHtml($markdown) !!}
@@ -65,7 +65,7 @@
 }
 
 .table-of-contents a {
-    @apply text-blue-600 dark:text-blue-400 hover:underline;
+    @apply text-green-600 dark:text-green-400 hover:underline;
 }
 
 /* Smooth scrolling for TOC links */
@@ -74,11 +74,11 @@ html {
 }
 
 /* Header anchor styling */
-.markdown-content h1[id], 
-.markdown-content h2[id], 
-.markdown-content h3[id], 
-.markdown-content h4[id], 
-.markdown-content h5[id], 
+.markdown-content h1[id],
+.markdown-content h2[id],
+.markdown-content h3[id],
+.markdown-content h4[id],
+.markdown-content h5[id],
 .markdown-content h6[id] {
     scroll-margin-top: 2rem;
 }
