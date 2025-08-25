@@ -18,7 +18,7 @@
                                name="q"
                                value="{{ $query }}"
                                placeholder="Search insights..."
-                               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-green-500 focus:ring-green-500">
                     </div>
 
                     <!-- Category Filter -->
@@ -26,7 +26,7 @@
                         <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
                         <select name="category"
                                 id="category"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-green-500 focus:ring-green-500">
                             <option value="">All Categories</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->slug }}" {{ $category == $cat->slug ? 'selected' : '' }}>
@@ -41,7 +41,7 @@
                         <label for="tag" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tag</label>
                         <select name="tag"
                                 id="tag"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:border-green-500 focus:ring-green-500">
                             <option value="">All Tags</option>
                             @foreach($tags as $tg)
                                 <option value="{{ $tg->slug }}" {{ $tag == $tg->slug ? 'selected' : '' }}>
@@ -120,7 +120,7 @@
                                 <div class="mx-2 my-2 flex flex-wrap gap-1">
                                     @foreach($insight->tags as $insightTag)
                                         <a href="{{ route('search') }}?tag={{ $insightTag->slug }}"
-                                           class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800">
+                                           class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-800">
                                             {{ $insightTag->name }}
                                         </a>
                                     @endforeach
