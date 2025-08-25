@@ -22,6 +22,10 @@ class User extends Authenticatable
         'password',
         'image_path',
         'is_admin',
+        'email_notifications',
+        'notify_new_insights',
+        'notify_comments',
+        'notify_replies',
     ];
 
     /**
