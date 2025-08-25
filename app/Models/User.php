@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image_path',
     ];
 
     /**
@@ -43,5 +44,28 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user's avatar URL.
+     */
+    public function getAvatarUrl(): string
+    {
+        if ($this->image_path) {
+            return asset('storage/' . $this->image_path);
+        }
+        
+        // Return a default avatar based on user's initials
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function bookmarkedInsights()
+    {
+        return $this->belongsToMany(Insight::class, 'bookmarks');
     }
 }

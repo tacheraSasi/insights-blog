@@ -31,9 +31,29 @@ class Insight extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function topLevelComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id')->with('allReplies', 'user');
+    }
+
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function views(): HasMany
+    {
+        return $this->hasMany(InsightView::class);
+    }
+
+    public function uniqueViews(): int
+    {
+        return $this->views()->distinct('ip_address')->count();
     }
 
     public function tags(): BelongsToMany
@@ -86,5 +106,18 @@ class Insight extends Model
         }
 
         return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    public function isBookmarkedBy($user = null): bool
+    {
+        if (!$user) {
+            $user = auth()->user();
+        }
+        
+        if (!$user) {
+            return false;
+        }
+
+        return $this->bookmarks()->where('user_id', $user->id)->exists();
     }
 }
