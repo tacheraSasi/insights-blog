@@ -1,7 +1,7 @@
 <x-app-layout :insight="$insight">
-    {{-- 
+    {{--
     @section('meta_title', $insight->title)
-    @section('meta_description', Str::limit($insight->content, 150)) 
+    @section('meta_description', Str::limit($insight->content, 150))
     --}}
 
     <div class="container mx-auto mt-10 p-4">
@@ -9,7 +9,7 @@
         <h1 class="font-extrabold text-neutral-900 dark:text-neutral-200 leading-tight text-4xl">{{ $insight->title }}</h1>
         <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
             <span>
-                Category: 
+                Category:
                 <span class="font-semibold text-neutral-600 dark:text-neutral-300">
                     {{ $insight->category->name }}
                 </span>
@@ -25,7 +25,7 @@
                     <a href="/category/{{ $insight->user->name }}" class="relative z-10 rounded-full mx-2 bg-neutral-800 px-2 py-1.5 font-medium text-neutral-400 hover:bg-neutral-700">
                         {{ $insight->user->name }}
                     </a>
-    
+
                     <time datetime="{{ $insight->created_at }}" class="text-neutral-500 mx-2">
                         {{ $insight->created_at->diffForHumans() }}
                     </time>
@@ -34,13 +34,13 @@
                 <div class="flex items-center gap-x-2">
                     @if (Auth::user() == $insight->user)
                         <x-secondary-link :to="route('insights.edit',$insight->id)">
-                            {{__('Edit')}} 
+                            {{__('Edit')}}
                         </x-secondary-link>
                     @endif
                     <x-primary-button
-                        x-data="" 
+                        x-data=""
                         x-on:click.prevent="$dispatch('open-modal', 'share-insight')">
-                        {{__('Share')}} 
+                        {{__('Share')}}
                     </x-primary-button>
                 </div>
 
@@ -50,7 +50,7 @@
                         <h1 class="text-2xl font-bold">Share insight</h1>
                         <br>
                         <p>
-                            <b>Copy link:</b>  
+                            <b>Copy link:</b>
                             <span id="insight-link">{{ request()->url() }}</span>
                         </p>
                         <div class="mt-6 flex justify-end gap-2">
@@ -73,7 +73,7 @@
                         {!! $insight->table_of_contents_html !!}
                     </div>
                 @endif
-                
+
                 <div class="prose dark:prose-invert max-w-none markdown-content">
                     {!! Illuminate\Support\Str::markdown($insight->content) !!}
                 </div>
@@ -105,10 +105,10 @@
         <div class="mt-6 flex items-center justify-between bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-sm">
             <div class="flex items-center space-x-4">
                 <x-like-button :insight="$insight" />
-                
+
                 <!-- NEW: Bookmark button -->
                 <x-bookmark-button :insight="$insight" />
-                
+
                 <!-- Analytics Display -->
                 <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -117,7 +117,7 @@
                     {{ $insight->uniqueViews() }} views
                 </div>
             </div>
-            
+
             <!-- NEW: Enhanced Social Sharing -->
             <div class="flex items-center gap-3">
                 <span class="text-sm text-gray-600 dark:text-gray-400">Share:</span>
@@ -127,7 +127,7 @@
 
         <!-- NEW: Related Insights Section -->
         <x-related-insights :insight="$insight" />
-            
+
             <div class="text-sm text-gray-500 dark:text-gray-400">
                 {{ $insight->comments->count() }} comments
             </div>
@@ -144,8 +144,8 @@
                         <!-- Main Comment -->
                         <div class="p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-md">
                             <div class="flex items-start gap-3">
-                                <img src="{{ $comment->user->getAvatarUrl() }}" 
-                                     alt="{{ $comment->user->name }}" 
+                                <img src="{{ $comment->user->getAvatarUrl() }}"
+                                     alt="{{ $comment->user->name }}"
                                      class="w-8 h-8 rounded-full">
                                 <div class="flex-1">
                                     <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">{{ $comment->comment }}</pre>
@@ -154,10 +154,10 @@
                                             {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
                                         </p>
                                         @auth
-                                            <button 
-                                                x-data="" 
+                                            <button
+                                                x-data=""
                                                 @click="$dispatch('reply-to-comment', { commentId: {{ $comment->id }}, userName: '{{ $comment->user->name }}' })"
-                                                class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                                class="text-sm text-green-600 dark:text-green-400 hover:underline">
                                                 Reply
                                             </button>
                                         @endauth
@@ -165,15 +165,15 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Replies -->
                         @if($comment->allReplies->count() > 0)
                             <div class="ml-8 mt-4 space-y-4">
                                 @foreach($comment->allReplies as $reply)
-                                    <div class="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-700 border-l-2 border-blue-500">
+                                    <div class="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-700 border-l-2 border-green-500">
                                         <div class="flex items-start gap-3">
-                                            <img src="{{ $reply->user->getAvatarUrl() }}" 
-                                                 alt="{{ $reply->user->name }}" 
+                                            <img src="{{ $reply->user->getAvatarUrl() }}"
+                                                 alt="{{ $reply->user->name }}"
                                                  class="w-6 h-6 rounded-full">
                                             <div class="flex-1">
                                                 <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap text-sm">{{ $reply->comment }}</pre>
@@ -194,20 +194,20 @@
             @auth
                 <div x-data="commentForm()" class="mt-6">
                     <!-- Reply indicator -->
-                    <div x-show="replyingTo" class="mb-3 p-2 bg-blue-50 dark:bg-blue-900 rounded text-sm">
-                        <span class="text-blue-700 dark:text-blue-300">Replying to <strong x-text="replyingToUser"></strong></span>
-                        <button @click="cancelReply()" class="ml-2 text-blue-600 dark:text-blue-400 hover:underline">Cancel</button>
+                    <div x-show="replyingTo" class="mb-3 p-2 bg-green-50 dark:bg-green-900 rounded text-sm">
+                        <span class="text-green-700 dark:text-green-300">Replying to <strong x-text="replyingToUser"></strong></span>
+                        <button @click="cancelReply()" class="ml-2 text-green-600 dark:text-green-400 hover:underline">Cancel</button>
                     </div>
-                    
+
                     <form action="{{ route('comments.store', $insight->id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="parent_id" x-model="parentId">
                         <div>
-                            <textarea 
-                                name="comment" 
-                                rows="4" 
-                                class="w-full p-4 rounded-lg border dark:bg-neutral-900 text-black dark:text-white dark:border-neutral-700 focus:outline-none focus:ring focus:ring-neutral-500 dark:focus:ring-neutral-400 placeholder-neutral-500 dark:placeholder-neutral-400" 
-                                :placeholder="replyingTo ? 'Write a reply...' : 'Write a comment...'" 
+                            <textarea
+                                name="comment"
+                                rows="4"
+                                class="w-full p-4 rounded-lg border dark:bg-neutral-900 text-black dark:text-white dark:border-neutral-700 focus:outline-none focus:ring focus:ring-neutral-500 dark:focus:ring-neutral-400 placeholder-neutral-500 dark:placeholder-neutral-400"
+                                :placeholder="replyingTo ? 'Write a reply...' : 'Write a comment...'"
                                 required></textarea>
                         </div>
                         <div class="mt-4">
@@ -217,14 +217,14 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <script>
                 function commentForm() {
                     return {
                         replyingTo: null,
                         replyingToUser: '',
                         parentId: null,
-                        
+
                         init() {
                             this.$watch('replyingTo', (value) => {
                                 if (value) {
@@ -233,7 +233,7 @@
                                     });
                                 }
                             });
-                            
+
                             // Listen for reply events
                             document.addEventListener('reply-to-comment', (e) => {
                                 this.replyingTo = e.detail.commentId;
@@ -241,7 +241,7 @@
                                 this.parentId = e.detail.commentId;
                             });
                         },
-                        
+
                         cancelReply() {
                             this.replyingTo = null;
                             this.replyingToUser = '';

@@ -7,15 +7,15 @@
                 Content
             </label>
             <div class="flex items-center space-x-2">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     id="preview-toggle-{{ $id }}"
                     class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                 >
                     Preview
                 </button>
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     id="fullscreen-toggle-{{ $id }}"
                     class="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                 >
@@ -23,7 +23,7 @@
                 </button>
             </div>
         </div>
-        
+
         <div class="relative">
             <!-- Editor Toolbar -->
             <div id="toolbar-{{ $id }}" class="border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-2 rounded-t-lg">
@@ -63,28 +63,28 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Editor Tabs -->
             <div class="flex border-b border-gray-200 dark:border-gray-600">
-                <button 
-                    type="button" 
-                    id="write-tab-{{ $id }}" 
-                    class="tab-btn active px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border-b-2 border-blue-500"
+                <button
+                    type="button"
+                    id="write-tab-{{ $id }}"
+                    class="tab-btn active px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border-b-2 border-green-500"
                 >
                     Write
                 </button>
-                <button 
-                    type="button" 
-                    id="preview-tab-{{ $id }}" 
+                <button
+                    type="button"
+                    id="preview-tab-{{ $id }}"
                     class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300"
                 >
                     Preview
                 </button>
             </div>
-            
+
             <!-- Write Panel -->
             <div id="write-panel-{{ $id }}" class="tab-panel">
-                <textarea 
+                <textarea
                     id="{{ $id }}"
                     name="{{ $name }}"
                     rows="20"
@@ -92,7 +92,7 @@
                     placeholder="Write your content in Markdown..."
                 >{{ $value }}</textarea>
             </div>
-            
+
             <!-- Preview Panel -->
             <div id="preview-panel-{{ $id }}" class="tab-panel hidden p-4 min-h-[500px] bg-white dark:bg-gray-900 rounded-b-lg prose dark:prose-invert max-w-none">
                 <div id="preview-content-{{ $id }}" class="markdown-content">
@@ -100,11 +100,11 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Helper Text -->
         <div class="mt-2 text-sm text-gray-500 dark:text-gray-400">
             <span>Supports Markdown formatting. </span>
-            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
+            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="text-green-600 dark:text-green-400 hover:underline">
                 View Markdown Guide
             </a>
         </div>
@@ -117,7 +117,7 @@
 }
 
 .tab-btn.active {
-    @apply text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 border-blue-500;
+    @apply text-green-600 dark:text-green-400 bg-white dark:bg-gray-900 border-green-500;
 }
 
 .markdown-editor-container.fullscreen {
@@ -140,30 +140,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewContent = document.getElementById(`preview-content-${editorId}`);
     const fullscreenToggle = document.getElementById(`fullscreen-toggle-${editorId}`);
     const container = textarea.closest('.markdown-editor-container');
-    
+
     // Tab switching
     writeTab.addEventListener('click', () => switchTab('write'));
     previewTab.addEventListener('click', () => switchTab('preview'));
-    
+
     function switchTab(tab) {
         if (tab === 'write') {
-            writeTab.classList.add('active', 'text-blue-600', 'dark:text-blue-400', 'bg-white', 'dark:bg-gray-900', 'border-blue-500');
+            writeTab.classList.add('active', 'text-green-600', 'dark:text-green-400', 'bg-white', 'dark:bg-gray-900', 'border-green-500');
             writeTab.classList.remove('text-gray-500', 'dark:text-gray-400', 'bg-gray-50', 'dark:bg-gray-800', 'border-transparent');
-            previewTab.classList.remove('active', 'text-blue-600', 'dark:text-blue-400', 'bg-white', 'dark:bg-gray-900', 'border-blue-500');
+            previewTab.classList.remove('active', 'text-green-600', 'dark:text-green-400', 'bg-white', 'dark:bg-gray-900', 'border-green-500');
             previewTab.classList.add('text-gray-500', 'dark:text-gray-400', 'bg-gray-50', 'dark:bg-gray-800', 'border-transparent');
             writePanel.classList.remove('hidden');
             previewPanel.classList.add('hidden');
         } else {
-            previewTab.classList.add('active', 'text-blue-600', 'dark:text-blue-400', 'bg-white', 'dark:bg-gray-900', 'border-blue-500');
+            previewTab.classList.add('active', 'text-green-600', 'dark:text-green-400', 'bg-white', 'dark:bg-gray-900', 'border-green-500');
             previewTab.classList.remove('text-gray-500', 'dark:text-gray-400', 'bg-gray-50', 'dark:bg-gray-800', 'border-transparent');
-            writeTab.classList.remove('active', 'text-blue-600', 'dark:text-blue-400', 'bg-white', 'dark:bg-gray-900', 'border-blue-500');
+            writeTab.classList.remove('active', 'text-green-600', 'dark:text-green-400', 'bg-white', 'dark:bg-gray-900', 'border-green-500');
             writeTab.classList.add('text-gray-500', 'dark:text-gray-400', 'bg-gray-50', 'dark:bg-gray-800', 'border-transparent');
             writePanel.classList.add('hidden');
             previewPanel.classList.remove('hidden');
             updatePreview();
         }
     }
-    
+
     // Fullscreen toggle
     fullscreenToggle.addEventListener('click', () => {
         container.classList.toggle('fullscreen');
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = '';
         }
     });
-    
+
     // Toolbar actions
     document.querySelectorAll(`#toolbar-${editorId} .toolbar-btn`).forEach(btn => {
         btn.addEventListener('click', () => {
@@ -183,13 +183,13 @@ document.addEventListener('DOMContentLoaded', function() {
             insertMarkdown(action);
         });
     });
-    
+
     function insertMarkdown(action) {
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         const selectedText = textarea.value.substring(start, end);
         let replacement = '';
-        
+
         switch (action) {
             case 'bold':
                 replacement = `**${selectedText || 'bold text'}**`;
@@ -201,30 +201,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 replacement = `## ${selectedText || 'Heading'}`;
                 break;
             case 'code':
-                replacement = selectedText.includes('\n') 
-                    ? `\`\`\`\n${selectedText || 'code'}\n\`\`\`` 
+                replacement = selectedText.includes('\n')
+                    ? `\`\`\`\n${selectedText || 'code'}\n\`\`\``
                     : `\`${selectedText || 'code'}\``;
                 break;
             case 'link':
                 replacement = `[${selectedText || 'link text'}](url)`;
                 break;
             case 'list':
-                replacement = selectedText 
+                replacement = selectedText
                     ? selectedText.split('\n').map(line => `- ${line}`).join('\n')
                     : '- List item';
                 break;
             case 'quote':
-                replacement = selectedText 
+                replacement = selectedText
                     ? selectedText.split('\n').map(line => `> ${line}`).join('\n')
                     : '> Quote';
                 break;
         }
-        
+
         textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
         textarea.focus();
         textarea.setSelectionRange(start + replacement.length, start + replacement.length);
     }
-    
+
     // Keyboard shortcuts
     textarea.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey) {
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Update preview (simple markdown parsing)
     function updatePreview() {
         const content = textarea.value;
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .replace(/^\- (.*$)/gim, '<li>$1</li>')
             .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2">$1</a>')
             .replace(/\n/gim, '<br>');
-            
+
         previewContent.innerHTML = html || '<p class="text-gray-500 dark:text-gray-400">Nothing to preview</p>';
     }
 });
