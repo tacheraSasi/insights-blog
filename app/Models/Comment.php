@@ -8,7 +8,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['comment', 'user_id', 'insight_id'];
+    protected $fillable = ['comment', 'user_id', 'insight_id', 'parent_id'];
 
     public function insight()
     {
@@ -18,5 +18,20 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function allReplies()
+    {
+        return $this->replies()->with('allReplies', 'user');
     }
 }

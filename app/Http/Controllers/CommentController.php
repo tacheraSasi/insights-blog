@@ -12,12 +12,14 @@ class CommentController extends Controller
     {
         $request->validate([
             'comment' => 'required',
+            'parent_id' => 'nullable|exists:comments,id',
         ]);
 
-        Comment::create([
+        $comment = Comment::create([
             'comment' => $request->comment,
             'user_id' => auth()->id(),
             'insight_id' => $insightId,
+            'parent_id' => $request->parent_id,
         ]);
 
         return redirect()->back()->with('success', 'Comment added successfully.');

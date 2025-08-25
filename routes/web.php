@@ -4,6 +4,9 @@ use App\Http\Controllers\InsightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\TagController as AdminTagController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Models\Insight;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +60,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/console', [ConsoleController::class, 'index'])->name('console.index');
     Route::get('/console/send-email', [ConsoleController::class, 'showEmailForm'])->name('console.email.form');
     Route::post('/console/send-email', [ConsoleController::class, 'sendEmailToAllUsers'])->name('console.email.send');
+});
+
+// Admin routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/insights', [AdminController::class, 'insights'])->name('insights');
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
+    Route::get('/tags', [AdminController::class, 'tags'])->name('tags');
+    
+    // CRUD routes for tags and categories
+    Route::post('/tags', [AdminTagController::class, 'store'])->name('tags.store');
+    Route::put('/tags/{tag}', [AdminTagController::class, 'update'])->name('tags.update');
+    Route::delete('/tags/{tag}', [AdminTagController::class, 'destroy'])->name('tags.destroy');
+    
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
 require __DIR__.'/insights.php';

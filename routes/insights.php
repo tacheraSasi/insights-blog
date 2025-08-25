@@ -2,6 +2,7 @@
 use App\Http\Controllers\InsightController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\BookmarkController;
 use Illuminate\Support\Facades\Route;
 
 #Giving access to even a guest
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/insights/{insight}', [InsightController::class, 'destroy'])->name('insights.destroy');
 
     Route::post('insights/{insight}/like', [LikeController::class, 'store'])->name('insights.like');
+    Route::post('insights/{insight}/bookmark', [BookmarkController::class, 'store'])->name('insights.bookmark');
     Route::post('insights/{insight}/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
