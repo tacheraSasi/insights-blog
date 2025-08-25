@@ -13,9 +13,40 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <!-- Avatar Section -->
+        <div>
+            <x-input-label for="avatar" :value="__('Profile Avatar')" />
+            <div class="mt-2 flex items-center space-x-4">
+                <div class="flex-shrink-0">
+                    <img class="h-16 w-16 rounded-full object-cover" 
+                         src="{{ $user->getAvatarUrl() }}" 
+                         alt="{{ $user->name }}"
+                         id="avatar-preview">
+                </div>
+                <div>
+                    <input type="file" 
+                           id="avatar" 
+                           name="avatar" 
+                           accept="image/*"
+                           class="block w-full text-sm text-neutral-600 dark:text-neutral-400
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-md file:border-0
+                                  file:text-sm file:font-medium
+                                  file:bg-neutral-50 file:text-neutral-700
+                                  dark:file:bg-neutral-800 dark:file:text-neutral-300
+                                  hover:file:bg-neutral-100 dark:hover:file:bg-neutral-700"
+                           onchange="previewAvatar(this)">
+                    <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                        PNG, JPG, GIF up to 2MB
+                    </p>
+                </div>
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
+        </div>
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -62,3 +93,15 @@
         </div>
     </form>
 </section>
+
+<script>
+function previewAvatar(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('avatar-preview').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

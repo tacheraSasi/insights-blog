@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Insight;
 use App\Models\Category;
+use App\Models\InsightView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth; // Import Auth facade
@@ -57,9 +58,30 @@ class InsightController extends Controller
     }
 
     // Show a specific insight
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $insight = Insight::where('slug', $slug)->with('category', 'user', 'comments', 'likes', 'tags')->firstOrFail();
+        
+        // Track view
+        $ipAddress = $request->ip();
+        $userAgent = $request->userAgent();
+        $userId = Auth::id();
+        
+        // Only track if this IP hasn't viewed this insight in the last 24 hours
+        $existingView = InsightView::where('insight_id', $insight->id)
+                                  ->where('ip_address', $ipAddress)
+                                  ->where('created_at', '>=', now()->subDay())
+                                  ->first();
+        
+        if (!$existingView) {
+            InsightView::create([
+                'insight_id' => $insight->id,
+                'ip_address' => $ipAddress,
+                'user_agent' => $userAgent,
+                'user_id' => $userId,
+            ]);
+        }
+        
         return view('insights.show', compact('insight'));
     }
 
