@@ -120,4 +120,26 @@ class Insight extends Model
 
         return $this->bookmarks()->where('user_id', $user->id)->exists();
     }
+
+    public function getRelatedInsights($limit = 3)
+    {
+        // Get insights with shared tags or same category
+        $tagIds = $this->tags->pluck('id');
+        
+        $query = self::where('id', '!=', $this->id)
+                    ->with('user', 'category', 'tags', 'likes');
+        
+        if ($tagIds->isNotEmpty()) {
+            // Prioritize insights with shared tags
+            $query->whereHas('tags', function ($q) use ($tagIds) {
+                $q->whereIn('tag_id', $tagIds);
+            })
+            ->orderByRaw('(SELECT COUNT(*) FROM insight_tag WHERE insight_id = insights.id AND tag_id IN (' . $tagIds->implode(',') . ')) DESC');
+        } else {
+            // Fallback to same category
+            $query->where('category_id', $this->category_id);
+        }
+        
+        return $query->latest()->limit($limit)->get();
+    }
 }
