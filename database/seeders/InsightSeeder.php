@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Insight;
 use App\Models\Comment;
 use Illuminate\Database\Seeder;
@@ -32,7 +33,7 @@ class InsightSeeder extends Seeder
                 $insight = Insight::create([
                     'title' => $faker->sentence(6),
                     'content' => '<p>' . implode('</p><p>', $faker->paragraphs(3)) . '</p>', // Generate random paragraphs
-                    'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(), 
+                    'slug' => Str::slug($faker->sentence(3)) . '-' . uniqid(),
                     'user_id' => $user->id,
                     'category_id' => $category->id,
                 ]);
