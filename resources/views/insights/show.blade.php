@@ -101,22 +101,32 @@
             @endif
         </x-card>
 
-        <!-- Like and Share Section -->
+        <!-- Like, Bookmark and Share Section -->
         <div class="mt-6 flex items-center justify-between bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-sm">
             <div class="flex items-center space-x-4">
                 <x-like-button :insight="$insight" />
                 
-                <button
-                    x-data="" 
-                    x-on:click.prevent="$dispatch('open-modal', 'share-insight')"
-                    class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition duration-200"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                <!-- NEW: Bookmark button -->
+                <x-bookmark-button :insight="$insight" />
+                
+                <!-- Analytics Display -->
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                     </svg>
-                    Share
-                </button>
+                    {{ $insight->uniqueViews() }} views
+                </div>
             </div>
+            
+            <!-- NEW: Enhanced Social Sharing -->
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Share:</span>
+                <x-social-share :insight="$insight" />
+            </div>
+        </div>
+
+        <!-- NEW: Related Insights Section -->
+        <x-related-insights :insight="$insight" />
             
             <div class="text-sm text-gray-500 dark:text-gray-400">
                 {{ $insight->comments->count() }} comments
@@ -127,31 +137,119 @@
         <div class="mt-10">
             <h2 class="text-3xl font-semibold text-neutral-800 dark:text-neutral-200">Comments ({{ $insight->comments->count() }})</h2>
 
-            <!-- Comment List -->
+            <!-- Comment List - NOW WITH THREADING SUPPORT -->
             <div class="mt-6 space-y-6">
-                @foreach($insight->comments as $comment)
-                    <div class="p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-md">
-                        <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">{{ $comment->comment }}</pre>
-                        <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                            {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
-                        </p>
+                @foreach($insight->topLevelComments as $comment)
+                    <div class="comment-thread">
+                        <!-- Main Comment -->
+                        <div class="p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-md">
+                            <div class="flex items-start gap-3">
+                                <img src="{{ $comment->user->getAvatarUrl() }}" 
+                                     alt="{{ $comment->user->name }}" 
+                                     class="w-8 h-8 rounded-full">
+                                <div class="flex-1">
+                                    <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">{{ $comment->comment }}</pre>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                                            {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
+                                        </p>
+                                        @auth
+                                            <button 
+                                                x-data="" 
+                                                @click="$dispatch('reply-to-comment', { commentId: {{ $comment->id }}, userName: '{{ $comment->user->name }}' })"
+                                                class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                                Reply
+                                            </button>
+                                        @endauth
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Replies -->
+                        @if($comment->allReplies->count() > 0)
+                            <div class="ml-8 mt-4 space-y-4">
+                                @foreach($comment->allReplies as $reply)
+                                    <div class="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-700 border-l-2 border-blue-500">
+                                        <div class="flex items-start gap-3">
+                                            <img src="{{ $reply->user->getAvatarUrl() }}" 
+                                                 alt="{{ $reply->user->name }}" 
+                                                 class="w-6 h-6 rounded-full">
+                                            <div class="flex-1">
+                                                <pre class="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap text-sm">{{ $reply->comment }}</pre>
+                                                <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                                    {{ $reply->user->name }} | {{ $reply->created_at->diffForHumans() }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
 
-            <!-- Add Comment Form -->
+            <!-- Add Comment Form - ENHANCED WITH REPLY SUPPORT -->
             @auth
-                <form action="{{ route('comments.store', $insight->id) }}" method="POST" class="mt-6">
-                    @csrf
-                    <div>
-                        <textarea name="comment" rows="4" class="w-full p-4 rounded-lg border dark:bg-neutral-900 text-black dark:text-white dark:border-neutral-700 focus:outline-none focus:ring focus:ring-neutral-500 dark:focus:ring-neutral-400 placeholder-neutral-500 dark:placeholder-neutral-400" placeholder="Write a comment..." required></textarea>
+                <div x-data="commentForm()" class="mt-6">
+                    <!-- Reply indicator -->
+                    <div x-show="replyingTo" class="mb-3 p-2 bg-blue-50 dark:bg-blue-900 rounded text-sm">
+                        <span class="text-blue-700 dark:text-blue-300">Replying to <strong x-text="replyingToUser"></strong></span>
+                        <button @click="cancelReply()" class="ml-2 text-blue-600 dark:text-blue-400 hover:underline">Cancel</button>
                     </div>
-                    <div class="mt-4">
-                        <x-primary-button type="submit" class="bg-customGreenDark dark:bg-customGreenLight text-white px-5 py-2 rounded-md border-none hover:bg-neutral-700 dark:hover:bg-neutral-400 transition duration-300">
-                            Add Comment
-                        </x-primary-button>
-                    </div>
-                </form>
+                    
+                    <form action="{{ route('comments.store', $insight->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="parent_id" x-model="parentId">
+                        <div>
+                            <textarea 
+                                name="comment" 
+                                rows="4" 
+                                class="w-full p-4 rounded-lg border dark:bg-neutral-900 text-black dark:text-white dark:border-neutral-700 focus:outline-none focus:ring focus:ring-neutral-500 dark:focus:ring-neutral-400 placeholder-neutral-500 dark:placeholder-neutral-400" 
+                                :placeholder="replyingTo ? 'Write a reply...' : 'Write a comment...'" 
+                                required></textarea>
+                        </div>
+                        <div class="mt-4">
+                            <x-primary-button type="submit" class="bg-customGreenDark dark:bg-customGreenLight text-white px-5 py-2 rounded-md border-none hover:bg-neutral-700 dark:hover:bg-neutral-400 transition duration-300">
+                                <span x-text="replyingTo ? 'Add Reply' : 'Add Comment'"></span>
+                            </x-primary-button>
+                        </div>
+                    </form>
+                </div>
+                
+                <script>
+                function commentForm() {
+                    return {
+                        replyingTo: null,
+                        replyingToUser: '',
+                        parentId: null,
+                        
+                        init() {
+                            this.$watch('replyingTo', (value) => {
+                                if (value) {
+                                    this.$nextTick(() => {
+                                        document.querySelector('textarea[name="comment"]').focus();
+                                    });
+                                }
+                            });
+                            
+                            // Listen for reply events
+                            document.addEventListener('reply-to-comment', (e) => {
+                                this.replyingTo = e.detail.commentId;
+                                this.replyingToUser = e.detail.userName;
+                                this.parentId = e.detail.commentId;
+                            });
+                        },
+                        
+                        cancelReply() {
+                            this.replyingTo = null;
+                            this.replyingToUser = '';
+                            this.parentId = null;
+                        }
+                    }
+                }
+                </script>
             @else
                 <p class="text-neutral-600 dark:text-neutral-400 mt-4">You must be logged in to comment.</p>
             @endauth
