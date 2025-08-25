@@ -64,6 +64,47 @@
                             <x-input-error class="mt-1" :messages="$errors->get('category_id')" />
                         </div>
 
+                        <!-- Tags Selection -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white">
+                                Tags
+                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(optional)</span>
+                            </label>
+                            <div id="tags-container" class="border border-gray-300 dark:border-neutral-600 rounded-lg p-3 min-h-[50px] bg-white dark:bg-neutral-800">
+                                <div id="selected-tags" class="flex flex-wrap gap-2 mb-2"></div>
+                                <input type="text" id="tag-input" 
+                                    class="border-0 outline-none bg-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 w-full" 
+                                    placeholder="Type to search and add tags...">
+                            </div>
+                            
+                            <!-- Tag suggestions dropdown -->
+                            <div id="tag-suggestions" class="hidden absolute z-10 w-full bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                            
+                            <!-- Hidden inputs for selected tags -->
+                            <div id="hidden-tag-inputs"></div>
+                            
+                            <!-- Available tags display -->
+                            <div class="mt-3">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Available tags:</p>
+                                <div class="flex flex-wrap gap-2">
+                                    @php
+                                        $allTags = \App\Models\Tag::all();
+                                    @endphp
+                                    @foreach($allTags as $tag)
+                                        <button type="button" 
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border-2 border-gray-200 dark:border-neutral-600 text-gray-700 dark:text-gray-300 hover:border-green-500 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200 tag-suggestion"
+                                            data-tag-id="{{ $tag->id }}" 
+                                            data-tag-name="{{ $tag->name }}"
+                                            data-tag-color="{{ $tag->color }}">
+                                            <span class="w-2 h-2 rounded-full mr-2" style="background-color: {{ $tag->color }}"></span>
+                                            {{ $tag->name }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <x-input-error class="mt-1" :messages="$errors->get('tags')" />
+                        </div>
+
                         <!-- Content Editor Section -->
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
@@ -153,6 +194,15 @@
             const saveDraftBtn = document.getElementById('save-draft');
             const form = document.getElementById('insight-form');
 
+            // Tag Selection System
+            const tagInput = document.getElementById('tag-input');
+            const selectedTagsContainer = document.getElementById('selected-tags');
+            const hiddenTagInputsContainer = document.getElementById('hidden-tag-inputs');
+            const tagSuggestions = document.getElementById('tag-suggestions');
+            const tagSuggestionButtons = document.querySelectorAll('.tag-suggestion');
+            
+            let selectedTags = [];
+
             // Auto-generate slug from title
             titleInput.addEventListener('input', function() {
                 const title = this.value;
@@ -166,6 +216,167 @@
                     slugContainer.style.display = slug ? 'block' : 'none';
                 } else {
                     slugContainer.style.display = 'none';
+                }
+            });
+
+            // Tag selection functionality
+            function addTag(tagId, tagName, tagColor) {
+                // Check if tag is already selected
+                if (selectedTags.find(tag => tag.id === tagId)) {
+                    return;
+                }
+
+                // Add to selected tags array
+                const tag = { id: tagId, name: tagName, color: tagColor };
+                selectedTags.push(tag);
+
+                // Create visual tag chip
+                const tagChip = document.createElement('div');
+                tagChip.className = 'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium text-white bg-green-500 hover:bg-green-600 transition-colors duration-200';
+                tagChip.innerHTML = `
+                    <span class="w-2 h-2 rounded-full mr-2" style="background-color: ${tagColor}"></span>
+                    ${tagName}
+                    <button type="button" class="ml-2 text-white hover:text-gray-200" onclick="removeTag('${tagId}')">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                `;
+                selectedTagsContainer.appendChild(tagChip);
+
+                // Create hidden input for form submission
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'tags[]';
+                hiddenInput.value = tagId;
+                hiddenInput.id = `tag-input-${tagId}`;
+                hiddenTagInputsContainer.appendChild(hiddenInput);
+
+                // Update suggestion buttons
+                updateTagSuggestionButtons();
+                
+                // Clear input
+                tagInput.value = '';
+            }
+
+            // Global function to remove tags (needed for onclick in template)
+            window.removeTag = function(tagId) {
+                // Remove from selected tags array
+                selectedTags = selectedTags.filter(tag => tag.id !== tagId);
+
+                // Remove visual chip
+                const tagChips = selectedTagsContainer.children;
+                for (let i = 0; i < tagChips.length; i++) {
+                    if (tagChips[i].querySelector('button').getAttribute('onclick').includes(tagId)) {
+                        tagChips[i].remove();
+                        break;
+                    }
+                }
+
+                // Remove hidden input
+                const hiddenInput = document.getElementById(`tag-input-${tagId}`);
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                }
+
+                // Update suggestion buttons
+                updateTagSuggestionButtons();
+            };
+
+            function updateTagSuggestionButtons() {
+                tagSuggestionButtons.forEach(button => {
+                    const tagId = button.getAttribute('data-tag-id');
+                    const isSelected = selectedTags.find(tag => tag.id === tagId);
+                    
+                    if (isSelected) {
+                        button.classList.add('opacity-50', 'cursor-not-allowed');
+                        button.classList.remove('hover:border-green-500', 'hover:text-green-600');
+                    } else {
+                        button.classList.remove('opacity-50', 'cursor-not-allowed');
+                        button.classList.add('hover:border-green-500', 'hover:text-green-600');
+                    }
+                });
+            }
+
+            // Add click handlers for tag suggestion buttons
+            tagSuggestionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tagId = this.getAttribute('data-tag-id');
+                    const tagName = this.getAttribute('data-tag-name');
+                    const tagColor = this.getAttribute('data-tag-color');
+                    
+                    if (!selectedTags.find(tag => tag.id === tagId)) {
+                        addTag(tagId, tagName, tagColor);
+                    }
+                });
+            });
+
+            // Handle tag input for searching
+            tagInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                
+                if (query.length === 0) {
+                    tagSuggestions.classList.add('hidden');
+                    return;
+                }
+
+                // Filter available tags
+                const availableTags = Array.from(tagSuggestionButtons)
+                    .filter(button => {
+                        const tagName = button.getAttribute('data-tag-name').toLowerCase();
+                        const tagId = button.getAttribute('data-tag-id');
+                        return tagName.includes(query) && !selectedTags.find(tag => tag.id === tagId);
+                    })
+                    .slice(0, 5); // Limit to 5 suggestions
+
+                if (availableTags.length > 0) {
+                    tagSuggestions.innerHTML = availableTags.map(button => {
+                        const tagId = button.getAttribute('data-tag-id');
+                        const tagName = button.getAttribute('data-tag-name');
+                        const tagColor = button.getAttribute('data-tag-color');
+                        
+                        return `
+                            <div class="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 flex items-center suggestion-item" 
+                                 data-tag-id="${tagId}" data-tag-name="${tagName}" data-tag-color="${tagColor}">
+                                <span class="w-2 h-2 rounded-full mr-2" style="background-color: ${tagColor}"></span>
+                                ${tagName}
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    // Add click handlers for suggestions
+                    tagSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const tagId = this.getAttribute('data-tag-id');
+                            const tagName = this.getAttribute('data-tag-name');
+                            const tagColor = this.getAttribute('data-tag-color');
+                            
+                            addTag(tagId, tagName, tagColor);
+                            tagSuggestions.classList.add('hidden');
+                        });
+                    });
+                    
+                    tagSuggestions.classList.remove('hidden');
+                } else {
+                    tagSuggestions.classList.add('hidden');
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#tags-container') && !e.target.closest('#tag-suggestions')) {
+                    tagSuggestions.classList.add('hidden');
+                }
+            });
+
+            // Handle Enter key in tag input
+            tagInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const firstSuggestion = tagSuggestions.querySelector('.suggestion-item');
+                    if (firstSuggestion) {
+                        firstSuggestion.click();
+                    }
                 }
             });
 
