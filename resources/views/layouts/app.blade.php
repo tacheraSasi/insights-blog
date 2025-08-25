@@ -10,8 +10,10 @@
 
     @if (isset($insight))
         <!-- Standard Meta Tags -->
-        <meta name="description" content="{{ $insight->title }} - {!! Str::limit(strip_tags($insight->content), 300) !!} {{ $insight->created_at }} by {{ $insight->user->name }} on insights.ekilie.com">
-        <meta name="keywords" content="{{ $insight->title }}, insights, ekilie, tachera sasi, ekiliSense, ekiliConvo, {{ $insight->slug }}, {{ $insight->user->name }}, insights.ekilie.com">
+        <meta name="description"
+            content="{{ $insight->title }} - {!! Str::limit(strip_tags($insight->content), 300) !!} {{ $insight->created_at }} by {{ $insight->user->name }} on insights.ekilie.com">
+        <meta name="keywords"
+            content="{{ $insight->title }}, insights, ekilie, tachera sasi, ekiliSense, ekiliConvo, {{ $insight->slug }}, {{ $insight->user->name }}, insights.ekilie.com">
         <meta name="author" content="{{ $insight->user->name }}, INSIGHTS, EKILIE">
 
         <!-- Open Graph / Facebook -->
@@ -30,7 +32,7 @@
 
         <!-- Canonical URL -->
         <link rel="canonical" href="https://insights.ekilie.com/insights/{{ $insight->id }}" />
-        
+
         <!-- Schema.org markup for Google -->
         <script type="application/ld+json">
         {
@@ -79,6 +81,14 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+
+    <script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE') }}/tinymce/8/tinymce.min.js" referrerpolicy="origin"
+        crossorigin="anonymous"></script>
+    <script>
+        tinymce.init({
+            selector: '#content'
+        });
+    </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> --}}
 </head>
 
@@ -103,6 +113,6 @@
 </body>
 <x-tinymce-config />
 
-<script src="{{asset('assets/js/main.js')}}"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
 
 </html>
