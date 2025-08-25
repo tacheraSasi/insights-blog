@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Insight;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\InsightView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,7 +33,8 @@ class InsightController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('insights.write', compact('categories'));
+        $tags = Tag::all();
+        return view('insights.write', compact('categories', 'tags'));
     }
 
     // Store a new insight
@@ -42,17 +44,24 @@ class InsightController extends Controller
             'title' => 'required|max:255',
             'content' => 'required', // Ensure this field exists in the form
             'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         $slug = Str::slug($request->title);
 
-        Insight::create([
+        $insight = Insight::create([
             'title' => $request->title,
             'content' => $request->content, // Ensure this is being passed correctly
             'slug' => $slug,
             'category_id' => $request->category_id,
             'user_id' => Auth::id(), // Use Auth::user() for the authenticated user ID
         ]);
+
+        // Attach selected tags if any
+        if ($request->has('tags') && is_array($request->tags)) {
+            $insight->tags()->attach($request->tags);
+        }
 
         return redirect()->route('insights.index')->with('success', 'Insight created successfully.');
     }
@@ -88,9 +97,10 @@ class InsightController extends Controller
     // Show the form to edit an insight
     public function edit($id)
     {
-        $insight = Insight::findOrFail($id);
+        $insight = Insight::with('tags')->findOrFail($id);
         $categories = Category::all();
-        return view('insights.edit', compact('insight', 'categories'));
+        $tags = Tag::all();
+        return view('insights.edit', compact('insight', 'categories', 'tags'));
     }
 
     // Update an existing insight
@@ -100,6 +110,8 @@ class InsightController extends Controller
             'title' => 'required|max:255',
             'content' => 'required', // Ensure this field exists in the form
             'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         $insight = Insight::findOrFail($id);
@@ -111,6 +123,14 @@ class InsightController extends Controller
             'slug' => $slug,
             'category_id' => $request->category_id,
         ]);
+
+        // Sync tags (this will remove old tags and add new ones)
+        if ($request->has('tags') && is_array($request->tags)) {
+            $insight->tags()->sync($request->tags);
+        } else {
+            // If no tags selected, remove all existing tags
+            $insight->tags()->sync([]);
+        }
 
         return redirect()->route('insights.index')->with('success', 'Insight updated successfully.');
     }
