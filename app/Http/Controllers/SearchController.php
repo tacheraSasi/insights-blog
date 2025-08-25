@@ -46,14 +46,32 @@ class SearchController extends Controller
         $query = $request->get('q');
         
         if (strlen($query) < 2) {
-            return response()->json([]);
+            return response()->json([
+                'insights' => [],
+                'categories' => [],
+                'tags' => []
+            ]);
         }
 
         $insights = Insight::select('id', 'title', 'slug')
             ->where('title', 'like', "%{$query}%")
-            ->limit(10)
+            ->limit(5)
             ->get();
 
-        return response()->json($insights);
+        $categories = Category::select('id', 'name', 'slug')
+            ->where('name', 'like', "%{$query}%")
+            ->limit(5)
+            ->get();
+
+        $tags = Tag::select('id', 'name', 'slug', 'color')
+            ->where('name', 'like', "%{$query}%")
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'insights' => $insights,
+            'categories' => $categories,
+            'tags' => $tags
+        ]);
     }
 }
