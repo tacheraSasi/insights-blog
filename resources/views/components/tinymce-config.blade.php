@@ -1,8 +1,8 @@
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE') }}/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     // Function to check for dark mode
     function isDarkMode() {
-        return document.documentElement.classList.contains('dark') || 
+        return document.documentElement.classList.contains('dark') ||
                window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
@@ -39,12 +39,12 @@
                 if (isDarkMode()) {
                     container.classList.add('dark');
                 }
-                
+
                 // Update word count in external element
                 editor.on('keyup', function () {
                     const wordCount = editor.plugins.wordcount.getCount();
                     const charCount = editor.getContent({format: 'text'}).length;
-                    
+
                     const statsEl = document.getElementById('editor-stats');
                     if (statsEl) {
                         statsEl.innerHTML = `${wordCount} words • ${charCount} characters`;
@@ -64,7 +64,7 @@
                     }
                 });
             });
-            
+
             observer.observe(document.documentElement, {
                 attributes: true,
                 attributeFilter: ['class']

@@ -118,14 +118,12 @@
                 </div>
             </div>
 
-            <!-- NEW: Enhanced Social Sharing -->
             <div class="flex items-center gap-3">
                 <span class="text-sm text-gray-600 dark:text-gray-400">Share:</span>
                 <x-social-share :insight="$insight" />
             </div>
         </div>
 
-        <!-- NEW: Related Insights Section -->
         <x-related-insights :insight="$insight" />
 
             <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -134,7 +132,7 @@
         </div>
 
         <!-- Comments Section -->
-        <div class="mt-10">
+        <div class="mt-10 mx-10">
             <h2 class="text-3xl font-semibold text-neutral-800 dark:text-neutral-200">Comments ({{ $insight->comments->count() }})</h2>
 
             <!-- Comment List - NOW WITH THREADING SUPPORT -->
