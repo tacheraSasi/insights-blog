@@ -1,4 +1,4 @@
-<script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     // Function to check for dark mode
     function isDarkMode() {
