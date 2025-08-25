@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'image_path',
+        'is_admin',
     ];
 
     /**
@@ -67,5 +68,10 @@ class User extends Authenticatable
     public function bookmarkedInsights()
     {
         return $this->belongsToMany(Insight::class, 'bookmarks');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 }
