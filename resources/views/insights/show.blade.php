@@ -66,17 +66,8 @@
             </div>
 
             <article class="max-w-none" id="content-output">
-                <!-- Enhanced markdown rendering with TOC -->
-                @if($insight->should_show_toc)
-                    <div class="table-of-contents bg-gray-50 dark:bg-gray-800 p-6 rounded-lg mb-8">
-                        <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Table of Contents</h3>
-                        {!! $insight->table_of_contents_html !!}
-                    </div>
-                @endif
-
-                <div class="prose dark:prose-invert max-w-none markdown-content">
-                    {!! Illuminate\Support\Str::markdown($insight->content) !!}
-                </div>
+                <!-- Enhanced markdown rendering using the markdown component -->
+                <x-markdown-component :insight="$insight" />
 
                 @if (Auth::user() == $insight->user)
                     <div class="flex mt-4">
