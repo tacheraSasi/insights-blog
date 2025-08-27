@@ -106,6 +106,12 @@ class InsightSeeder extends Seeder
                 'title' => 'Building RESTful APIs: Best Practices and Common Pitfalls',
                 'content' => '<h2>RESTful API Design Principles</h2><p>REST (Representational State Transfer) has become the standard for web API design. Understanding and implementing REST principles correctly is crucial for building maintainable and scalable APIs.</p><h2>HTTP Methods and Status Codes</h2><p>Use HTTP methods appropriately: GET for retrieval, POST for creation, PUT for updates, DELETE for removal. Always return appropriate status codes: 200 for success, 201 for creation, 404 for not found, 500 for server errors.</p><h2>Resource Naming Conventions</h2><p>Use nouns for resources, not verbs. Keep URLs simple and intuitive: /users for user collections, /users/123 for specific users. Use plural nouns consistently.</p><h2>Authentication and Security</h2><p>Implement proper authentication (JWT, OAuth) and authorization. Always use HTTPS, validate input data, and implement rate limiting to prevent abuse.</p><h2>Documentation and Versioning</h2><p>Provide comprehensive API documentation and implement versioning strategy from the beginning. Tools like OpenAPI/Swagger can help maintain up-to-date documentation.</p>',
                 'tags' => ['API', 'Best Practices', 'Security', 'Tutorial']
+            ],
+            [
+                'category' => 'Technology',
+                'title' => 'Complete Markdown Guide: Syntax Highlighting and Advanced Features Demo',
+                'content' => file_get_contents(__DIR__ . '/markdown-demo-content.md'),
+                'tags' => ['Tutorial', 'Best Practices', 'API', 'JavaScript']
             ]
         ];
 

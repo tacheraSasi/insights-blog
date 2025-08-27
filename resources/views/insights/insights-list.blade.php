@@ -30,7 +30,23 @@
                               </a>
                           </h3>
                           <div class="mt-3 line-clamp-3 h-[200px] overflow-hidden text-sm leading-6 text-gray-600 dark:text-neutral-400 prose prose-sm dark:prose-invert max-w-none">
-                              {!! Str::limit(Str::markdown($insight->content), 200) !!}
+                              @php
+                                  // Get preview content (first 300 characters for better preview)
+                                  $previewContent = Str::limit($insight->content, 300);
+                                  
+                                  // Check if content is markdown
+                                  $isMarkdown = preg_match('/^#|\n#{1,6}\s|```|\*\*|\*[^*]|\[.*\]\(.*\)|\|.*\|/', $previewContent);
+                                  
+                                  if ($isMarkdown) {
+                                      // Render markdown preview
+                                      echo '<div class="markdown-preview">';
+                                      echo Str::markdown($previewContent);
+                                      echo '</div>';
+                                  } else {
+                                      // Content is HTML, strip tags for clean preview
+                                      echo strip_tags($previewContent, '<strong><em><code>');
+                                  }
+                              @endphp
                           </div>
                       </div>
 
