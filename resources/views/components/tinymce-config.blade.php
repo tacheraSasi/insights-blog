@@ -1,12 +1,10 @@
 <script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE') }}/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    // Function to check for dark mode
     function isDarkMode() {
         return document.documentElement.classList.contains('dark') ||
                window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    // Initialize TinyMCE with enhanced features
     tinymce.init({
         selector: '#content',
         height: 400,

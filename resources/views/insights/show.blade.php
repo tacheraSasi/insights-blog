@@ -66,7 +66,6 @@
             </div>
 
             <article class="max-w-none" id="content-output">
-                <!-- Enhanced markdown rendering using the markdown component -->
                 <x-markdown-component :insight="$insight" />
 
                 @if (Auth::user() == $insight->user)
@@ -97,7 +96,6 @@
             <div class="flex items-center space-x-4">
                 <x-like-button :insight="$insight" />
 
-                <!-- NEW: Bookmark button -->
                 <x-bookmark-button :insight="$insight" />
 
                 <!-- Analytics Display -->
@@ -179,7 +177,6 @@
                 @endforeach
             </div>
 
-            <!-- Add Comment Form - ENHANCED WITH REPLY SUPPORT -->
             @auth
                 <div x-data="commentForm()" class="mt-6">
                     <!-- Reply indicator -->
